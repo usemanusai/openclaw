@@ -59,7 +59,12 @@
         "allowFrom": ["*"]
       },
       "groupPolicy": "open",
-      "guilds": {},
+      "mentionPolicy": "always",
+      "guilds": {
+        "*": {
+          "policy": "open"
+        }
+      },
       "actions": {
         "reactions": true,
         "messages": true,
