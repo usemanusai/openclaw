@@ -135,11 +135,7 @@ Save this to:
   },
   "channels": {
     "telegram": {
-      "enabled": false,
-      "dmPolicy": "pairing",
-      "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
-      "groupPolicy": "allowlist",
-      "streamMode": "partial"
+      "enabled": false
     },
     "discord": {
       "enabled": true,
@@ -149,7 +145,12 @@ Save this to:
         "allowFrom": ["*"]
       },
       "groupPolicy": "open",
-      "guilds": {},
+      "mentionPolicy": "always",
+      "guilds": {
+        "*": {
+          "policy": "open"
+        }
+      },
       "actions": {
         "reactions": true,
         "messages": true,
@@ -207,6 +208,31 @@ Save this to:
 ---
 
 ## 🛠️ Troubleshooting
+
+### Discord Error 4014 (Disallowed Intents)
+
+If you see `Fatal Gateway error: 4014`, you need to enable Discord bot intents:
+
+1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
+2. Select your bot → **Bot** section
+3. Scroll to **Privileged Gateway Intents**
+4. Enable ALL THREE:
+   - ✅ PRESENCE INTENT
+   - ✅ SERVER MEMBERS INTENT
+   - ✅ MESSAGE CONTENT INTENT
+5. Click **Save Changes**
+6. Restart the gateway
+
+### Windows PowerShell Command Errors
+
+On Windows, you may see errors like:
+```
+The token '&&' is not a valid statement separator in this version.
+```
+
+This happens when the AI generates bash-style commands. The bot will usually retry with correct PowerShell syntax. You can also:
+- Tell the bot: "Use PowerShell syntax, not bash"
+- The bot learns from errors and will adapt
 
 ### "Invalid config" or "Unrecognized key" errors
 

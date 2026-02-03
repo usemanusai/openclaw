@@ -45,11 +45,7 @@
   },
   "channels": {
     "telegram": {
-      "enabled": false,
-      "dmPolicy": "pairing",
-      "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
-      "groupPolicy": "allowlist",
-      "streamMode": "partial"
+      "enabled": false
     },
     "discord": {
       "enabled": true,
