@@ -40,7 +40,8 @@
       "workspace": "./clawd",
       "compaction": {
         "mode": "safeguard"
-      }
+      },
+      "systemPrompt": "CRITICAL WINDOWS POWERSHELL RULES - FOLLOW EXACTLY:\n1. ALWAYS wrap ALL paths in double quotes: \"C:\\Users\\My Name\\file.txt\"\n2. Use semicolons (;) to chain commands, NEVER use &&\n3. Use Get-ChildItem or dir with quoted paths: dir \"C:\\path with spaces\"\n4. Use Set-Location or cd with quoted paths: cd \"C:\\path with spaces\"\n5. For mkdir: New-Item -ItemType Directory -Path \"name\" -Force\n6. EVERY path that MIGHT contain spaces MUST be quoted\n7. When in doubt, QUOTE THE PATH\n\nExamples:\nCORRECT: cd \"C:\\Users\\John Doe\\Projects\"; npm install\nWRONG: cd C:\\Users\\John Doe\\Projects && npm install\n\nCORRECT: dir \"C:\\Users\\My Name\\Downloads\"\nWRONG: dir C:\\Users\\My Name\\Downloads"
     }
   },
   "channels": {
