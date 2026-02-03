@@ -1,8 +1,42 @@
-> [!⚠️ **This is a customized fork**](./FORK-README.md) with pre-configured **Discord integration** and **Google Antigravity multi-model support** (7 models: Gemini 3, Claude 4.5, GPT-OSS).
+> [!NOTE]
+> ## 🦞 This is a customized fork with Discord + Google Antigravity Multi-Model Support
 >
-> **Quick Start**: `cp openclaw.json.template ~/.openclaw/openclaw.json` • Add your Discord token • `openclaw models auth login --provider google-antigravity` • `openclaw gateway run`
+> **7 Free AI Models**: Gemini 3 Flash/Pro, Claude Sonnet 4.5, Claude Opus 4.5, GPT-OSS
 >
-> See [FORK-README.md](./FORK-README.md) for full details on available models and Discord control capabilities.
+> ### ⚡ Quick Start (5 minutes)
+>
+> **1. Clone & Install**
+> ```bash
+> git clone https://github.com/usemanusai/openclaw.git
+> cd openclaw && pnpm install
+> ```
+>
+> **2. Copy Config**
+> ```bash
+> # macOS/Linux
+> mkdir -p ~/.openclaw && cp openclaw.json.template ~/.openclaw/openclaw.json
+>
+> # Windows (PowerShell)
+> New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.openclaw"
+> Copy-Item openclaw.json.template "$env:USERPROFILE\.openclaw\openclaw.json"
+> ```
+>
+> **3. Add Discord Token** - Edit the config and replace `YOUR_DISCORD_BOT_TOKEN_HERE`
+>
+> **4. Enable Discord Bot Intents** ⚠️ CRITICAL
+> - Go to [Discord Developer Portal](https://discord.com/developers/applications) → Your Bot → Bot
+> - Enable ALL THREE under "Privileged Gateway Intents":
+>   - ✅ PRESENCE INTENT
+>   - ✅ SERVER MEMBERS INTENT
+>   - ✅ MESSAGE CONTENT INTENT
+>
+> **5. Authenticate & Run**
+> ```bash
+> openclaw models auth login --provider google-antigravity
+> openclaw gateway run
+> ```
+>
+> 📖 See [FORK-README.md](./FORK-README.md) for full setup guide, troubleshooting, and 50 example prompts.
 
 ---
 
@@ -151,3 +185,111 @@ Run `openclaw doctor` to surface risky/misconfigured DM policies.
 - [Media pipeline](https://docs.openclaw.ai/nodes/images): images/audio/video, transcription hooks, size caps, temp file lifecycle. Audio details: [Audio](https://docs.openclaw.ai/nodes/audio).
 
 For the full original README, see the [upstream repository](https://github.com/openclaw/openclaw).
+
+---
+
+## 💻 50 Example Prompts for Code Development with Google Antigravity
+
+Use these prompts via Discord DM, @mention, or CLI (`openclaw agent --message "..."`):
+
+### 🏗️ Project Setup & Scaffolding
+
+1. `Create a new Next.js 15 project with TypeScript, Tailwind CSS, and shadcn/ui`
+2. `Set up a Python FastAPI project with Poetry, pytest, and Docker support`
+3. `Initialize a Rust CLI project with clap for argument parsing`
+4. `Create a monorepo structure with pnpm workspaces for frontend, backend, and shared packages`
+5. `Scaffold a Chrome extension with Manifest V3, React, and TypeScript`
+
+### 🔧 API Development
+
+6. `Build a REST API endpoint for user authentication with JWT tokens`
+7. `Create a GraphQL schema for a blog with posts, comments, and users`
+8. `Implement rate limiting middleware for Express.js`
+9. `Add WebSocket support for real-time notifications`
+10. `Create an OpenAPI/Swagger spec for my existing API endpoints`
+
+### 🗄️ Database & ORM
+
+11. `Set up Prisma with PostgreSQL and create schema for an e-commerce app`
+12. `Write a database migration to add soft deletes to all tables`
+13. `Create SQLAlchemy models for a multi-tenant SaaS application`
+14. `Optimize this SQL query that's taking too long to execute`
+15. `Implement database connection pooling with PgBouncer`
+
+### 🧪 Testing
+
+16. `Write unit tests for my React components using Vitest and Testing Library`
+17. `Create integration tests for my API endpoints with supertest`
+18. `Set up end-to-end tests with Playwright for the login flow`
+19. `Add snapshot testing for my UI components`
+20. `Generate mock data factories for my database models`
+
+### 🚀 CI/CD & DevOps
+
+21. `Create a GitHub Actions workflow for CI/CD with testing and deployment`
+22. `Write a Dockerfile for my Node.js app with multi-stage builds`
+23. `Set up Kubernetes manifests for deploying my app with autoscaling`
+24. `Create a Terraform config for AWS infrastructure (ECS, RDS, S3)`
+25. `Add pre-commit hooks for linting, formatting, and type checking`
+
+### 🛡️ Security
+
+26. `Audit my code for security vulnerabilities and suggest fixes`
+27. `Implement CSRF protection for my form submissions`
+28. `Add input validation and sanitization to prevent XSS attacks`
+29. `Set up OAuth 2.0 authentication with Google and GitHub`
+30. `Implement role-based access control (RBAC) for my API`
+
+### ⚡ Performance
+
+31. `Profile and optimize the slow parts of my React app`
+32. `Add Redis caching for frequently accessed API responses`
+33. `Implement lazy loading and code splitting for my frontend`
+34. `Optimize images and assets for faster page loads`
+35. `Add database indexes to improve query performance`
+
+### 📝 Documentation
+
+36. `Generate API documentation from my code comments`
+37. `Create a README with installation, usage, and contributing guidelines`
+38. `Write JSDoc comments for all public functions in this file`
+39. `Create an architecture diagram for my application`
+40. `Generate a CHANGELOG from my git commit history`
+
+### 🔨 Refactoring
+
+41. `Refactor this class to use dependency injection`
+42. `Convert this callback-based code to async/await`
+43. `Extract reusable hooks from my React components`
+44. `Split this large file into smaller, focused modules`
+45. `Apply SOLID principles to this codebase`
+
+### 👨‍💻 Full-Stack Tasks
+
+46. `Build a complete user authentication system with registration, login, and password reset`
+47. `Create a file upload system with drag-and-drop, progress bar, and S3 storage`
+48. `Implement a real-time chat feature with WebSockets and message persistence`
+49. `Build a dashboard with charts, filters, and export-to-CSV functionality`
+50. `Create a payment integration with Stripe including subscriptions and webhooks`
+
+---
+
+### 💡 Tips for Best Results
+
+- **Be specific**: Include tech stack, framework versions, and constraints
+- **Provide context**: Share relevant code snippets or error messages
+- **Use thinking mode**: For complex tasks, add `--thinking high` to the CLI
+- **Switch models**: Use `/model claude-opus-4-5-thinking` for complex reasoning tasks
+- **Iterate**: Ask follow-up questions to refine the output
+
+### 🔖 Available Models
+
+| Model | Best For |
+|-------|----------|
+| `google-antigravity/gemini-3-flash` | Fast responses, real-time interactions |
+| `google-antigravity/gemini-3-pro` | Complex reasoning, detailed analysis |
+| `google-antigravity/gemini-3-pro-thinking` | Deep reasoning with extended thinking |
+| `google-antigravity/claude-sonnet-4-5` | Balanced speed/quality |
+| `google-antigravity/claude-sonnet-4-5-thinking` | Extended reasoning |
+| `google-antigravity/claude-opus-4-5-thinking` | Most capable, complex tasks |
+| `google-antigravity/gpt-oss` | OpenAI's open-source model |
