@@ -52,7 +52,15 @@ copy openclaw.json.template %USERPROFILE%\.openclaw\openclaw.json
 
 Edit `~/.openclaw/openclaw.json` and replace `YOUR_DISCORD_BOT_TOKEN_HERE` with your actual Discord bot token.
 
-### Step 4: Authenticate with Google Antigravity
+### Step 4: Validate Config (Important!)
+
+```bash
+openclaw doctor --fix
+```
+
+This checks your config and fixes any issues. If you see "Invalid config" errors, this command will resolve them.
+
+### Step 5: Authenticate with Google Antigravity
 
 ```bash
 openclaw models auth login --provider google-antigravity
@@ -60,7 +68,7 @@ openclaw models auth login --provider google-antigravity
 
 This opens a browser for OAuth login. Once complete, you'll have access to all 7 models.
 
-### Step 5: Run the Gateway
+### Step 6: Run the Gateway
 
 ```bash
 openclaw gateway run
@@ -70,6 +78,41 @@ You should see:
 ```
 [discord] logged in to discord as <YOUR_BOT_ID>
 ```
+
+## 🛠️ Troubleshooting
+
+### "Invalid config" or "Unrecognized key" errors
+
+If you see errors like:
+```
+Invalid config at ...\openclaw.json:
+- agents.defaults: Unrecognized key: "tools"
+```
+
+Run this command to automatically fix the config:
+```bash
+openclaw doctor --fix
+```
+
+### Windows Users
+
+On Windows, use these commands instead:
+
+**PowerShell:**
+```powershell
+mkdir -Force "$env:USERPROFILE\.openclaw"
+copy openclaw.json.template "$env:USERPROFILE\.openclaw\openclaw.json"
+```
+
+**Command Prompt:**
+```cmd
+mkdir %USERPROFILE%\.openclaw
+copy openclaw.json.template %USERPROFILE%\.openclaw\openclaw.json
+```
+
+Then edit the config file at `%USERPROFILE%\.openclaw\openclaw.json` with your Discord token.
+
+---
 
 ## 🔧 Discord Bot Setup (Required)
 
