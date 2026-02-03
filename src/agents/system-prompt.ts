@@ -161,6 +161,30 @@ function buildDocsSection(params: { docsPath?: string; isMinimal: boolean; readT
   ];
 }
 
+function buildWindowsShellSection(osInfo?: string): string[] {
+  if (!osInfo) {
+    return [];
+  }
+  const normalized = osInfo.toLowerCase();
+  if (!normalized.includes("windows") && !normalized.startsWith("win")) {
+    return [];
+  }
+  return [
+    "## Windows Shell (PowerShell)",
+    "You are running on Windows with PowerShell. CRITICAL path handling rules:",
+    "- **ALWAYS quote paths containing spaces** with double quotes",
+    '- Example: `cd "C:\\Users\\My Name\\Projects"` NOT `cd C:\\Users\\My Name\\Projects`',
+    '- Example: `dir "C:\\Users\\My Name"` NOT `dir C:\\Users\\My Name`',
+    "- Use semicolons `;` to chain commands, NOT `&&`",
+    "- Example: `cd mydir; npm install` NOT `cd mydir && npm install`",
+    "- Use `Get-ChildItem` or `dir` for listing (not `ls` with Unix flags)",
+    "- Use `New-Item -ItemType Directory -Path \"name\" -Force` instead of `mkdir -p`",
+    "- Use `Test-Path \"file\"` to check if file/directory exists",
+    "- npm/pnpm/node commands work directly without modification",
+    "",
+  ];
+}
+
 export function buildAgentSystemPrompt(params: {
   workspaceDir: string;
   defaultThinkLevel?: ThinkLevel;
@@ -410,6 +434,7 @@ export function buildAgentSystemPrompt(params: {
     "Keep narration brief and value-dense; avoid repeating obvious steps.",
     "Use plain human language for narration unless in a technical context.",
     "",
+    ...buildWindowsShellSection(runtimeInfo?.os),
     ...safetySection,
     "## OpenClaw CLI Quick Reference",
     "OpenClaw is controlled via subcommands. Do not invent commands.",
