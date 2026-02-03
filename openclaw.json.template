@@ -45,7 +45,7 @@
   },
   "channels": {
     "telegram": {
-      "enabled": true,
+      "enabled": false,
       "dmPolicy": "pairing",
       "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
       "groupPolicy": "allowlist",
@@ -55,8 +55,8 @@
       "enabled": true,
       "token": "YOUR_DISCORD_BOT_TOKEN_HERE",
       "dm": {
-        "policy": "pairing",
-        "allowFrom": []
+        "policy": "open",
+        "allowFrom": ["*"]
       },
       "groupPolicy": "allowlist",
       "guilds": {},
@@ -97,7 +97,7 @@
     "mode": "local",
     "bind": "loopback",
     "auth": {
-      "mode": "token"
+      "mode": "none"
     }
   },
   "plugins": {
@@ -106,7 +106,7 @@
         "enabled": true
       },
       "telegram": {
-        "enabled": true
+        "enabled": false
       },
       "discord": {
         "enabled": true
