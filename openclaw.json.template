@@ -58,7 +58,7 @@
         "policy": "open",
         "allowFrom": ["*"]
       },
-      "groupPolicy": "allowlist",
+      "groupPolicy": "open",
       "guilds": {},
       "actions": {
         "reactions": true,
