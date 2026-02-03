@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.1.30"
+  },
+  "auth": {
+    "profiles": {}
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "google-antigravity/gemini-3-flash",
+        "fallbacks": [
+          "google-antigravity/gemini-3-pro",
+          "google-antigravity/claude-sonnet-4-5"
+        ]
+      },
+      "models": {
+        "google-antigravity/gemini-3-pro": {
+          "alias": "Gemini 3 Pro"
+        },
+        "google-antigravity/gemini-3-pro-thinking": {
+          "alias": "Gemini 3 Pro (Thinking)"
+        },
+        "google-antigravity/gemini-3-flash": {
+          "alias": "Gemini 3 Flash"
+        },
+        "google-antigravity/claude-sonnet-4-5": {
+          "alias": "Claude Sonnet 4.5"
+        },
+        "google-antigravity/claude-sonnet-4-5-thinking": {
+          "alias": "Claude Sonnet 4.5 (Thinking)"
+        },
+        "google-antigravity/claude-opus-4-5-thinking": {
+          "alias": "Claude Opus 4.5 (Thinking)"
+        },
+        "google-antigravity/gpt-oss": {
+          "alias": "GPT-OSS"
+        }
+      },
+      "workspace": "./clawd",
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "tools": {
+        "google-search": {
+          "enabled": true
+        },
+        "web_fetch": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "pairing",
+      "botToken": "YOUR_TELEGRAM_BOT_TOKEN_HERE",
+      "groupPolicy": "allowlist",
+      "streamMode": "partial"
+    },
+    "discord": {
+      "enabled": true,
+      "token": "YOUR_DISCORD_BOT_TOKEN_HERE",
+      "dm": {
+        "policy": "pairing",
+        "allowFrom": []
+      },
+      "groupPolicy": "allowlist",
+      "guilds": {},
+      "actions": {
+        "reactions": true,
+        "messages": true,
+        "threads": true,
+        "pins": true,
+        "search": true,
+        "polls": true,
+        "permissions": true,
+        "memberInfo": true,
+        "roleInfo": true,
+        "channelInfo": true,
+        "voiceStatus": true,
+        "events": true,
+        "stickers": true,
+        "emojiUploads": false,
+        "stickerUploads": false,
+        "roles": false,
+        "channels": false,
+        "moderation": false
+      }
+    }
+  },
+  "skills": {
+    "entries": {
+      "discord": {
+        "enabled": true
+      },
+      "gemini": {
+        "enabled": true
+      }
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token"
+    }
+  },
+  "plugins": {
+    "entries": {
+      "google-antigravity-auth": {
+        "enabled": true
+      },
+      "telegram": {
+        "enabled": true
+      },
+      "discord": {
+        "enabled": true
+      }
+    }
+  }
+}
