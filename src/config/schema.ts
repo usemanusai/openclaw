@@ -307,9 +307,9 @@ function applyPluginSchemas(schema: ConfigSchema, plugins: PluginUiMetadata[]): 
     const pluginSchema = asSchemaObject(plugin.configSchema);
     const nextConfigSchema =
       baseConfigSchema &&
-      pluginSchema &&
-      isObjectSchema(baseConfigSchema) &&
-      isObjectSchema(pluginSchema)
+        pluginSchema &&
+        isObjectSchema(baseConfigSchema) &&
+        isObjectSchema(pluginSchema)
         ? mergeObjectSchema(baseConfigSchema, pluginSchema)
         : cloneSchema(plugin.configSchema);
 
@@ -431,7 +431,7 @@ function buildBaseConfigSchema(): ConfigSchemaResponse {
     return cachedBase;
   }
   const schema = OpenClawSchema.toJSONSchema({
-    target: "draft-07",
+    target: "draft-7",
     unrepresentable: "any",
   });
   schema.title = "OpenClawConfig";
@@ -664,8 +664,8 @@ function buildLookupChildren(
 
   const wildcardSchema =
     (schema.additionalProperties &&
-    typeof schema.additionalProperties === "object" &&
-    !Array.isArray(schema.additionalProperties)
+      typeof schema.additionalProperties === "object" &&
+      !Array.isArray(schema.additionalProperties)
       ? schema.additionalProperties
       : null) ?? resolveItemsSchema(schema);
   if (wildcardSchema) {

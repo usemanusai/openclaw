@@ -555,188 +555,188 @@ describe("redactConfigSnapshot", () => {
         restored: Record<string, unknown>;
       }) => void;
     }> = [
-      {
-        name: "nested values (schema)",
-        snapshot: buildNestedValuesSnapshot(),
-        assert: assertNestedValuesRoundTrip,
-      },
-      {
-        name: "nested values (uiHints)",
-        hints: {
-          "custom1.*.mySecret": { sensitive: true },
-          "custom2[].mySecret": { sensitive: true },
+        {
+          name: "nested values (schema)",
+          snapshot: buildNestedValuesSnapshot(),
+          assert: assertNestedValuesRoundTrip,
         },
-        snapshot: buildNestedValuesSnapshot(),
-        assert: assertNestedValuesRoundTrip,
-      },
-      {
-        name: "directly sensitive records and arrays",
-        snapshot: makeSnapshot({
-          custom: {
-            token: "this-is-a-custom-secret-value",
-            mySecret: "this-is-a-custom-secret-value",
+        {
+          name: "nested values (uiHints)",
+          hints: {
+            "custom1.*.mySecret": { sensitive: true },
+            "custom2[].mySecret": { sensitive: true },
           },
-          token: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
-        }),
-        assert: ({ redacted, restored }) => {
-          const cfg = redacted;
-          const custom = cfg.custom as Record<string, unknown>;
-          expect(custom.token).toBe(REDACTED_SENTINEL);
-          expect(custom.mySecret).toBe(REDACTED_SENTINEL);
-          expect((cfg.token as unknown[])[0]).toBe(REDACTED_SENTINEL);
-          expect((cfg.token as unknown[])[1]).toBe(REDACTED_SENTINEL);
-
-          const out = restored;
-          const restoredCustom = out.custom as Record<string, unknown>;
-          expect(restoredCustom.token).toBe("this-is-a-custom-secret-value");
-          expect(restoredCustom.mySecret).toBe("this-is-a-custom-secret-value");
-          expect((out.token as unknown[])[0]).toBe("this-is-a-custom-secret-value");
-          expect((out.token as unknown[])[1]).toBe("this-is-a-custom-secret-value");
+          snapshot: buildNestedValuesSnapshot(),
+          assert: assertNestedValuesRoundTrip,
         },
-      },
-      {
-        name: "directly sensitive records and arrays (uiHints)",
-        hints: {
-          "custom.*": { sensitive: true },
-          "customArray[]": { sensitive: true },
-        },
-        snapshot: makeSnapshot({
-          custom: {
-            anykey: "this-is-a-custom-secret-value",
-            mySecret: "this-is-a-custom-secret-value",
-          },
-          customArray: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
-        }),
-        assert: ({ redacted, restored }) => {
-          const cfg = redacted;
-          const custom = cfg.custom as Record<string, unknown>;
-          expect(custom.anykey).toBe(REDACTED_SENTINEL);
-          expect(custom.mySecret).toBe(REDACTED_SENTINEL);
-          expect((cfg.customArray as unknown[])[0]).toBe(REDACTED_SENTINEL);
-          expect((cfg.customArray as unknown[])[1]).toBe(REDACTED_SENTINEL);
-
-          const out = restored;
-          const restoredCustom = out.custom as Record<string, unknown>;
-          expect(restoredCustom.anykey).toBe("this-is-a-custom-secret-value");
-          expect(restoredCustom.mySecret).toBe("this-is-a-custom-secret-value");
-          expect((out.customArray as unknown[])[0]).toBe("this-is-a-custom-secret-value");
-          expect((out.customArray as unknown[])[1]).toBe("this-is-a-custom-secret-value");
-        },
-      },
-      {
-        name: "non-sensitive arrays remain unchanged",
-        hints: {
-          "custom[]": { sensitive: false },
-        },
-        snapshot: makeSnapshot({
-          harmless: ["this-is-a-custom-harmless-value", "this-is-a-custom-secret-looking-value"],
-          custom: ["this-is-a-custom-harmless-value", "this-is-a-custom-secret-value"],
-        }),
-        assert: ({ redacted, restored }) => {
-          const cfg = redacted;
-          expect((cfg.harmless as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
-          expect((cfg.harmless as unknown[])[1]).toBe("this-is-a-custom-secret-looking-value");
-          expect((cfg.custom as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
-          expect((cfg.custom as unknown[])[1]).toBe("this-is-a-custom-secret-value");
-
-          const out = restored;
-          expect((out.harmless as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
-          expect((out.harmless as unknown[])[1]).toBe("this-is-a-custom-secret-looking-value");
-          expect((out.custom as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
-          expect((out.custom as unknown[])[1]).toBe("this-is-a-custom-secret-value");
-        },
-      },
-      {
-        name: "deep schema-sensitive arrays and upstream-sensitive paths",
-        snapshot: makeSnapshot({
-          nested: {
-            level: {
-              token: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
-              harmless: ["value", "value"],
+        {
+          name: "directly sensitive records and arrays",
+          snapshot: makeSnapshot({
+            custom: {
+              token: "this-is-a-custom-secret-value",
+              mySecret: "this-is-a-custom-secret-value",
             },
-            password: {
-              harmless: ["value", "value"],
-            },
-          },
-        }),
-        assert: ({ redacted, restored }) => {
-          const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
-          expect((cfg.nested.level.token as unknown[])[0]).toBe(REDACTED_SENTINEL);
-          expect((cfg.nested.level.token as unknown[])[1]).toBe(REDACTED_SENTINEL);
-          expect((cfg.nested.level.harmless as unknown[])[0]).toBe("value");
-          expect((cfg.nested.level.harmless as unknown[])[1]).toBe("value");
-          expect((cfg.nested.password.harmless as unknown[])[0]).toBe(REDACTED_SENTINEL);
-          expect((cfg.nested.password.harmless as unknown[])[1]).toBe(REDACTED_SENTINEL);
+            token: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
+          }),
+          assert: ({ redacted, restored }) => {
+            const cfg = redacted;
+            const custom = cfg.custom as Record<string, unknown>;
+            expect(custom.token).toBe(REDACTED_SENTINEL);
+            expect(custom.mySecret).toBe(REDACTED_SENTINEL);
+            expect((cfg.token as unknown[])[0]).toBe(REDACTED_SENTINEL);
+            expect((cfg.token as unknown[])[1]).toBe(REDACTED_SENTINEL);
 
-          const out = restored as Record<string, Record<string, Record<string, unknown>>>;
-          expect((out.nested.level.token as unknown[])[0]).toBe("this-is-a-custom-secret-value");
-          expect((out.nested.level.token as unknown[])[1]).toBe("this-is-a-custom-secret-value");
-          expect((out.nested.level.harmless as unknown[])[0]).toBe("value");
-          expect((out.nested.level.harmless as unknown[])[1]).toBe("value");
-          expect((out.nested.password.harmless as unknown[])[0]).toBe("value");
-          expect((out.nested.password.harmless as unknown[])[1]).toBe("value");
-        },
-      },
-      {
-        name: "deep non-string arrays on schema-sensitive paths remain unchanged",
-        snapshot: makeSnapshot({
-          nested: {
-            level: {
-              token: [42, 815],
-            },
+            const out = restored;
+            const restoredCustom = out.custom as Record<string, unknown>;
+            expect(restoredCustom.token).toBe("this-is-a-custom-secret-value");
+            expect(restoredCustom.mySecret).toBe("this-is-a-custom-secret-value");
+            expect((out.token as unknown[])[0]).toBe("this-is-a-custom-secret-value");
+            expect((out.token as unknown[])[1]).toBe("this-is-a-custom-secret-value");
           },
-        }),
-        assert: ({ redacted, restored }) => {
-          const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
-          expectNestedLevelPairValue(cfg, "token", [42, 815]);
-
-          const out = restored as Record<string, Record<string, Record<string, unknown>>>;
-          expectNestedLevelPairValue(out, "token", [42, 815]);
         },
-      },
-      {
-        name: "deep arrays respect uiHints sensitivity",
-        hints: {
-          "nested.level.custom[]": { sensitive: true },
-        },
-        snapshot: makeSnapshot({
-          nested: {
-            level: {
-              custom: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
-            },
+        {
+          name: "directly sensitive records and arrays (uiHints)",
+          hints: {
+            "custom.*": { sensitive: true },
+            "customArray[]": { sensitive: true },
           },
-        }),
-        assert: ({ redacted, restored }) => {
-          const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
-          expect((cfg.nested.level.custom as unknown[])[0]).toBe(REDACTED_SENTINEL);
-          expect((cfg.nested.level.custom as unknown[])[1]).toBe(REDACTED_SENTINEL);
-
-          const out = restored as Record<string, Record<string, Record<string, unknown>>>;
-          expect((out.nested.level.custom as unknown[])[0]).toBe("this-is-a-custom-secret-value");
-          expect((out.nested.level.custom as unknown[])[1]).toBe("this-is-a-custom-secret-value");
-        },
-      },
-      {
-        name: "deep non-string arrays respect uiHints sensitivity",
-        hints: {
-          "nested.level.custom[]": { sensitive: true },
-        },
-        snapshot: makeSnapshot({
-          nested: {
-            level: {
-              custom: [42, 815],
+          snapshot: makeSnapshot({
+            custom: {
+              anykey: "this-is-a-custom-secret-value",
+              mySecret: "this-is-a-custom-secret-value",
             },
-          },
-        }),
-        assert: ({ redacted, restored }) => {
-          const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
-          expectNestedLevelPairValue(cfg, "custom", [42, 815]);
+            customArray: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
+          }),
+          assert: ({ redacted, restored }) => {
+            const cfg = redacted;
+            const custom = cfg.custom as Record<string, unknown>;
+            expect(custom.anykey).toBe(REDACTED_SENTINEL);
+            expect(custom.mySecret).toBe(REDACTED_SENTINEL);
+            expect((cfg.customArray as unknown[])[0]).toBe(REDACTED_SENTINEL);
+            expect((cfg.customArray as unknown[])[1]).toBe(REDACTED_SENTINEL);
 
-          const out = restored as Record<string, Record<string, Record<string, unknown>>>;
-          expectNestedLevelPairValue(out, "custom", [42, 815]);
+            const out = restored;
+            const restoredCustom = out.custom as Record<string, unknown>;
+            expect(restoredCustom.anykey).toBe("this-is-a-custom-secret-value");
+            expect(restoredCustom.mySecret).toBe("this-is-a-custom-secret-value");
+            expect((out.customArray as unknown[])[0]).toBe("this-is-a-custom-secret-value");
+            expect((out.customArray as unknown[])[1]).toBe("this-is-a-custom-secret-value");
+          },
         },
-      },
-    ];
+        {
+          name: "non-sensitive arrays remain unchanged",
+          hints: {
+            "custom[]": { sensitive: false },
+          },
+          snapshot: makeSnapshot({
+            harmless: ["this-is-a-custom-harmless-value", "this-is-a-custom-secret-looking-value"],
+            custom: ["this-is-a-custom-harmless-value", "this-is-a-custom-secret-value"],
+          }),
+          assert: ({ redacted, restored }) => {
+            const cfg = redacted;
+            expect((cfg.harmless as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
+            expect((cfg.harmless as unknown[])[1]).toBe("this-is-a-custom-secret-looking-value");
+            expect((cfg.custom as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
+            expect((cfg.custom as unknown[])[1]).toBe("this-is-a-custom-secret-value");
+
+            const out = restored;
+            expect((out.harmless as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
+            expect((out.harmless as unknown[])[1]).toBe("this-is-a-custom-secret-looking-value");
+            expect((out.custom as unknown[])[0]).toBe("this-is-a-custom-harmless-value");
+            expect((out.custom as unknown[])[1]).toBe("this-is-a-custom-secret-value");
+          },
+        },
+        {
+          name: "deep schema-sensitive arrays and upstream-sensitive paths",
+          snapshot: makeSnapshot({
+            nested: {
+              level: {
+                token: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
+                harmless: ["value", "value"],
+              },
+              password: {
+                harmless: ["value", "value"],
+              },
+            },
+          }),
+          assert: ({ redacted, restored }) => {
+            const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
+            expect((cfg.nested.level.token as unknown[])[0]).toBe(REDACTED_SENTINEL);
+            expect((cfg.nested.level.token as unknown[])[1]).toBe(REDACTED_SENTINEL);
+            expect((cfg.nested.level.harmless as unknown[])[0]).toBe("value");
+            expect((cfg.nested.level.harmless as unknown[])[1]).toBe("value");
+            expect((cfg.nested.password.harmless as unknown[])[0]).toBe(REDACTED_SENTINEL);
+            expect((cfg.nested.password.harmless as unknown[])[1]).toBe(REDACTED_SENTINEL);
+
+            const out = restored as Record<string, Record<string, Record<string, unknown>>>;
+            expect((out.nested.level.token as unknown[])[0]).toBe("this-is-a-custom-secret-value");
+            expect((out.nested.level.token as unknown[])[1]).toBe("this-is-a-custom-secret-value");
+            expect((out.nested.level.harmless as unknown[])[0]).toBe("value");
+            expect((out.nested.level.harmless as unknown[])[1]).toBe("value");
+            expect((out.nested.password.harmless as unknown[])[0]).toBe("value");
+            expect((out.nested.password.harmless as unknown[])[1]).toBe("value");
+          },
+        },
+        {
+          name: "deep non-string arrays on schema-sensitive paths remain unchanged",
+          snapshot: makeSnapshot({
+            nested: {
+              level: {
+                token: [42, 815],
+              },
+            },
+          }),
+          assert: ({ redacted, restored }) => {
+            const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
+            expectNestedLevelPairValue(cfg, "token", [42, 815]);
+
+            const out = restored as Record<string, Record<string, Record<string, unknown>>>;
+            expectNestedLevelPairValue(out, "token", [42, 815]);
+          },
+        },
+        {
+          name: "deep arrays respect uiHints sensitivity",
+          hints: {
+            "nested.level.custom[]": { sensitive: true },
+          },
+          snapshot: makeSnapshot({
+            nested: {
+              level: {
+                custom: ["this-is-a-custom-secret-value", "this-is-a-custom-secret-value"],
+              },
+            },
+          }),
+          assert: ({ redacted, restored }) => {
+            const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
+            expect((cfg.nested.level.custom as unknown[])[0]).toBe(REDACTED_SENTINEL);
+            expect((cfg.nested.level.custom as unknown[])[1]).toBe(REDACTED_SENTINEL);
+
+            const out = restored as Record<string, Record<string, Record<string, unknown>>>;
+            expect((out.nested.level.custom as unknown[])[0]).toBe("this-is-a-custom-secret-value");
+            expect((out.nested.level.custom as unknown[])[1]).toBe("this-is-a-custom-secret-value");
+          },
+        },
+        {
+          name: "deep non-string arrays respect uiHints sensitivity",
+          hints: {
+            "nested.level.custom[]": { sensitive: true },
+          },
+          snapshot: makeSnapshot({
+            nested: {
+              level: {
+                custom: [42, 815],
+              },
+            },
+          }),
+          assert: ({ redacted, restored }) => {
+            const cfg = redacted as Record<string, Record<string, Record<string, unknown>>>;
+            expectNestedLevelPairValue(cfg, "custom", [42, 815]);
+
+            const out = restored as Record<string, Record<string, Record<string, unknown>>>;
+            expectNestedLevelPairValue(out, "custom", [42, 815]);
+          },
+        },
+      ];
 
     for (const testCase of cases) {
       const redacted = redactConfigSnapshot(testCase.snapshot, testCase.hints);
@@ -1099,7 +1099,7 @@ describe("restoreRedactedValues", () => {
 describe("realredactConfigSnapshot_real", () => {
   it("main schema redact works (samples)", () => {
     const schema = OpenClawSchema.toJSONSchema({
-      target: "draft-07",
+      target: "draft-7",
       unrepresentable: "any",
     });
     schema.title = "OpenClawConfig";

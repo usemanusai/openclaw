@@ -384,7 +384,7 @@
     "undici": "^7.22.0",
     "ws": "^8.19.0",
     "yaml": "^2.8.2",
-    "zod": "^3.25.1"
+    "zod": "3.25.76"
   },
   "devDependencies": {
     "@grammyjs/types": "^3.25.0",

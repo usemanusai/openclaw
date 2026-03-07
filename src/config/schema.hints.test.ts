@@ -124,7 +124,7 @@ describe("mapSensitivePaths", () => {
 
   it("main schema yields correct hints (samples)", () => {
     const schema = OpenClawSchema.toJSONSchema({
-      target: "draft-07",
+      target: "draft-7",
       unrepresentable: "any",
     });
     schema.title = "OpenClawConfig";
