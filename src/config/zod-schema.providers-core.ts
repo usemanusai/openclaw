@@ -875,8 +875,8 @@ export const SlackConfigSchema = SlackAccountSchema.safeExtend({
   accounts: z.record(z.string(), SlackAccountSchema.optional()).optional(),
   defaultAccount: z.string().optional(),
 }).superRefine((value, ctx) => {
-  const dmPolicy = value.dmPolicy ?? value.dm?.policy ?? "pairing";
-  const allowFrom = value.allowFrom ?? value.dm?.allowFrom;
+  const dmPolicy = (value as any).dmPolicy ?? (value as any).dm?.policy ?? "pairing";
+  const allowFrom = (value as any).allowFrom ?? (value as any).dm?.allowFrom;
   const allowFromPath =
     value.allowFrom !== undefined ? (["allowFrom"] as const) : (["dm", "allowFrom"] as const);
   requireOpenAllowFrom({
@@ -910,9 +910,16 @@ export const SlackConfigSchema = SlackAccountSchema.safeExtend({
     }
     const accountMode = account.mode ?? baseMode;
     const effectivePolicy =
-      account.dmPolicy ?? account.dm?.policy ?? value.dmPolicy ?? value.dm?.policy ?? "pairing";
+      (account as any).dmPolicy ??
+      (account as any).dm?.policy ??
+      (value as any).dmPolicy ??
+      (value as any).dm?.policy ??
+      "pairing";
     const effectiveAllowFrom =
-      account.allowFrom ?? account.dm?.allowFrom ?? value.allowFrom ?? value.dm?.allowFrom;
+      (account as any).allowFrom ??
+      (account as any).dm?.allowFrom ??
+      (value as any).allowFrom ??
+      (value as any).dm?.allowFrom;
     requireOpenAllowFrom({
       policy: effectivePolicy,
       allowFrom: effectiveAllowFrom,

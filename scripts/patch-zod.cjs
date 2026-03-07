@@ -42,12 +42,11 @@ if (!content.includes('inst.toJSONSchema =')) {
 }
 
 // 3. Patch ZodObject interface (Types)
-// We use 'any' as return type for safeExtend to avoid complex inference issues like TS2339.
 if (!content.includes('safeExtend<S extends any>(')) {
   content = content.replace(
     /export interface ZodObject<[\s\S]*?> extends _ZodType<core\.\$ZodObjectInternals<Shape, Config>>,[\s\S]*?core\.\$ZodObject<Shape, Config> {/,
     `$&
-  safeExtend<S extends any>(shape: S): any;`
+  safeExtend<S extends any>(shape: S): ZodObject<any, any>;`
   );
 }
 
@@ -65,4 +64,4 @@ if (!content.includes('inst.safeExtend =')) {
 }
 
 fs.writeFileSync(schemasFile, content);
-console.log('Successfully patched Zod schemas.ts with extra types and methods (v3 - any return).');
+console.log('Successfully patched Zod schemas.ts with extra types and methods (v2).');
