@@ -1,7 +1,12 @@
-import { ZodType, ZodObject, ZodRawShape } from "zod";
+import { ZodType, ZodObject, ZodRawShape, util } from "zod";
 
 declare module "zod" {
-    export interface ZodType<out Output = any, out Input = any, out Internals = any> {
+    // 1. ZodType must match node_modules/zod/src/v4/classic/schemas.ts:20
+    export interface ZodType<
+        out Output = unknown,
+        out Input = unknown,
+        out Internals extends any = any
+    > {
         /**
          * Registers the schema in a registry.
          * Part of Zod v4 legacy/classic support in this project.
@@ -20,9 +25,10 @@ declare module "zod" {
         }): Record<string, unknown>;
     }
 
+    // 2. ZodObject must match node_modules/zod/src/v4/classic/schemas.ts:1049
     export interface ZodObject<
         out Shape extends ZodRawShape = ZodRawShape,
-        out Config = any
+        out Config extends any = any
     > {
         /**
          * Project-specific extension for safely extending a Zod object schema.
