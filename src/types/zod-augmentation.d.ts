@@ -1,7 +1,7 @@
-import { ZodType, ZodObject, ZodRawShape, util } from "zod";
+import { ZodType, ZodObject, ZodRawShape } from "zod";
 
 declare module "zod" {
-    // 1. ZodType must match node_modules/zod/src/v4/classic/schemas.ts:20
+    // 1. ZodType must match node_modules/zod/src/v4/classic/schemas.ts:20 EXACTLY
     export interface ZodType<
         out Output = unknown,
         out Input = unknown,
@@ -25,7 +25,7 @@ declare module "zod" {
         }): Record<string, unknown>;
     }
 
-    // 2. ZodObject must match node_modules/zod/src/v4/classic/schemas.ts:1049
+    // 2. ZodObject must match node_modules/zod/src/v4/classic/schemas.ts:1049 EXACTLY
     export interface ZodObject<
         out Shape extends ZodRawShape = ZodRawShape,
         out Config extends any = any
