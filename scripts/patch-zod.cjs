@@ -1,32 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 
-// Target file in the local workspace or in node_modules on the VPS
 const schemasFile = path.join(__dirname, '..', 'node_modules', 'zod', 'src', 'v4', 'classic', 'schemas.ts');
 
 if (!fs.existsSync(schemasFile)) {
     console.error(`Target file not found: ${schemasFile}`);
-    process.exit(0); // Exit gracefully if not found
+    process.exit(0);
 }
 
 let content = fs.readFileSync(schemasFile, 'utf8');
 
-// 1. Patch ZodType interface
-if (!content.includes('register<R extends core.$ZodRegistry>(')) {
-    // Use a regex to find the ZodType interface and inject the new methods
+// 1. Patch ZodType interface (Types)
+if (!content.includes('register<R extends any>(')) {
     content = content.replace(
         /export interface ZodType<[\s\S]*?> extends core\.\$ZodType<[\s\S]*?> {/,
         `$&
-  /**
-   * Registers the schema in a registry.
-   * Added by OpenClaw patch.
-   */
   register<R extends any>(registry: R, ...meta: any[]): this;
-
-  /**
-   * Converts the Zod schema to a JSON Schema.
-   * Added by OpenClaw patch.
-   */
   toJSONSchema(params?: {
       target?: "draft-7" | "draft-2020-12";
       unrepresentable?: "throw" | "any";
@@ -36,18 +25,43 @@ if (!content.includes('register<R extends core.$ZodRegistry>(')) {
     );
 }
 
-// 2. Patch ZodObject interface
-if (!content.includes('safeExtend<S extends core.$ZodShape>(')) {
+// 2. Patch ZodType implementation (Runtime)
+if (!content.includes('inst.toJSONSchema =')) {
+    // Inject into the ZodType constructor
+    content = content.replace(
+        /export const ZodType: core\.\$constructor<ZodType> = \/\*@__PURE__\*\/ core\.\$constructor\("ZodType", \(inst, def\) => {/,
+        `$&
+  inst.register = (registry, ...meta) => {
+    registry.register(inst, ...meta);
+    return inst;
+  };
+  inst.toJSONSchema = (params) => {
+    return core.toJSONSchema(inst, params);
+  };`
+    );
+}
+
+// 3. Patch ZodObject interface (Types)
+if (!content.includes('safeExtend<S extends any>(')) {
     content = content.replace(
         /export interface ZodObject<[\s\S]*?> extends _ZodType<core\.\$ZodObjectInternals<Shape, Config>>,[\s\S]*?core\.\$ZodObject<Shape, Config> {/,
         `$&
-  /**
-   * Project-specific extension for safely extending a Zod object schema.
-   * Added by OpenClaw patch.
-   */
   safeExtend<S extends any>(shape: S): ZodObject<any, any>;`
     );
 }
 
+// 4. Patch ZodObject implementation (Runtime)
+if (!content.includes('inst.safeExtend =')) {
+    // Inject into the ZodObject constructor
+    content = content.replace(
+        /export const ZodObject: core\.\$constructor<ZodObject> = \/\*@__PURE__\*\/ core\.\$constructor\("ZodObject", \(inst, def\) => {/,
+        `$&
+  inst.safeExtend = (shape) => {
+    const newShape = { ...inst.shape, ...shape };
+    return ZodObject.init(inst.clone(), { ...def, shape: newShape });
+  };`
+    );
+}
+
 fs.writeFileSync(schemasFile, content);
-console.log('Successfully patched Zod schemas.ts with extra methods.');
+console.log('Successfully patched Zod schemas.ts with extra types and methods.');
