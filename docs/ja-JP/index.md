@@ -52,15 +52,15 @@ OpenClawは、単一のGatewayプロセスを通じてチャットアプリをPi
 
 ## 仕組み
 
-```mermaid
-flowchart LR
-  A["チャットアプリ + プラグイン"] --> B["Gateway"]
-  B --> C["Piエージェント"]
-  B --> D["CLI"]
-  B --> E["Web Control UI"]
-  B --> F["macOSアプリ"]
-  B --> G["iOSおよびAndroidノード"]
-```
+### 統合アーキテクチャ
+- **インバウンド・ソース**: チャットアプリ (WhatsApp, Telegram など) + プラグイン。
+- **セントラル・コア**: OpenClaw Gateway。
+- **アウトバウンド・ターゲット**:
+  - AIエージェント (例: Pi)
+  - CLIインターフェース
+  - Web Control UI
+  - プラットフォーム・クライアント (macOSアプリ, iOS/Androidノード)
+
 
 Gatewayは、セッション、ルーティング、チャネル接続の信頼できる唯一の情報源です。
 

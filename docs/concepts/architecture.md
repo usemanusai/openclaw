@@ -58,24 +58,15 @@ Protocol details:
 
 ## Connection lifecycle (single client)
 
-```mermaid
-sequenceDiagram
-    participant Client
-    participant Gateway
+### Connection & Request Lifecycle
+1. **Handshake**: Client sends `req:connect` -> Gateway responds with `res (ok)`. 
+   - Gateway push: `event:presence` + `event:tick`.
+2. **Task Execution**: 
+   - Client sends `req:agent`.
+   - Gateway ACKs with `res:agent (accepted)`.
+   - Gateway streams progress via `event:agent`.
+   - Gateway finalizes with `res:agent (summary)`.
 
-    Client->>Gateway: req:connect
-    Gateway-->>Client: res (ok)
-    Note right of Gateway: or res error + close
-    Note left of Client: payload=hello-ok<br>snapshot: presence + health
-
-    Gateway-->>Client: event:presence
-    Gateway-->>Client: event:tick
-
-    Client->>Gateway: req:agent
-    Gateway-->>Client: res:agent<br>ack {runId, status:"accepted"}
-    Gateway-->>Client: event:agent<br>(streaming)
-    Gateway-->>Client: res:agent<br>final {runId, status, summary}
-```
 
 ## Wire protocol (summary)
 

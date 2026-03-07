@@ -34,15 +34,13 @@ function resolveUiDependency(moduleId) {
   const fallbackCandidates = candidates.join(", ");
   throw new Error(
     `A2UI bundle config cannot resolve ${moduleId}. Checked: ${fallbackCandidates}. ` +
-      "Keep dependency installed in ui workspace or repo root before bundling.",
+    "Keep dependency installed in ui workspace or repo root before bundling.",
   );
 }
 
 export default {
   input: fromHere("bootstrap.js"),
-  experimental: {
-    attachDebugInfo: "none",
-  },
+
   treeshake: false,
   resolve: {
     alias: {

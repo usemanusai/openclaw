@@ -67,25 +67,15 @@ Reference: [/tools/plugin#distribution-npm](/tools/plugin#distribution-npm)
 
 ## Decision tree
 
-```mermaid
-flowchart TD
-  A[OpenClaw is not working] --> B{What breaks first}
-  B --> C[No replies]
-  B --> D[Dashboard or Control UI will not connect]
-  B --> E[Gateway will not start or service not running]
-  B --> F[Channel connects but messages do not flow]
-  B --> G[Cron or heartbeat did not fire or did not deliver]
-  B --> H[Node is paired but camera canvas screen exec fails]
-  B --> I[Browser tool fails]
+### 🔍 Triage Decision Tree
+- **Issue: No replies** -> Check [/No replies section/].
+- **Issue: UI/Dashboard Connectivity** -> Check [/Control UI section/].
+- **Issue: Gateway Start/Service Failure** -> Check [/Gateway section/].
+- **Issue: Message Flow/Channel Disconnect** -> Check [/Channel flow section/].
+- **Issue: Automation/Cron/Heartbeat Error** -> Check [/Automation section/].
+- **Issue: Node/VDI Execution Failure** -> Check [/Node tools section/].
+- **Issue: Browser Tool Failure** -> Check [/Browser section/].
 
-  C --> C1[/No replies section/]
-  D --> D1[/Control UI section/]
-  E --> E1[/Gateway section/]
-  F --> F1[/Channel flow section/]
-  G --> G1[/Automation section/]
-  H --> H1[/Node tools section/]
-  I --> I1[/Browser section/]
-```
 
 <AccordionGroup>
   <Accordion title="No replies">

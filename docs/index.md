@@ -58,15 +58,15 @@ OpenClaw is a **self-hosted gateway** that connects your favorite chat apps — 
 
 ## How it works
 
-```mermaid
-flowchart LR
-  A["Chat apps + plugins"] --> B["Gateway"]
-  B --> C["Pi agent"]
-  B --> D["CLI"]
-  B --> E["Web Control UI"]
-  B --> F["macOS app"]
-  B --> G["iOS and Android nodes"]
-```
+### Integration Architecture
+- **Inbound Sources**: Chat apps (WhatsApp, Telegram, etc.) + Plugins.
+- **Central Core**: OpenClaw Gateway.
+- **Outbound Targets**:
+  - AI Agents (e.g., Pi)
+  - CLI Interface
+  - Web Control UI
+  - Platform Clients (macOS app, iOS/Android nodes)
+
 
 The Gateway is the single source of truth for sessions, routing, and channel connections.
 

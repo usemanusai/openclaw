@@ -4,10 +4,11 @@
  * Replaces bash scripts/bundle-a2ui.sh
  */
 import { createHash } from "node:crypto";
-import { promises as fs } from "node:fs";
+import { promises as fs, existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execSync } from "node:child_process";
+import * as esbuild from "esbuild";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, "..");
@@ -99,10 +100,23 @@ async function main() {
       stdio: "inherit",
     });
 
-    console.log("Bundling A2UI with rolldown...");
-    execSync(`rolldown -c "${A2UI_APP_DIR}/rolldown.config.mjs"`, {
-      cwd: ROOT_DIR,
-      stdio: "inherit",
+    console.log("Bundling A2UI with esbuild...");
+    const a2uiLitDist = path.resolve(ROOT_DIR, "vendor/a2ui/renderers/lit/dist/src");
+    const a2uiThemeContext = path.resolve(a2uiLitDist, "0.8/ui/context/theme.js");
+
+    const uiNodeModules = path.resolve(ROOT_DIR, "ui/node_modules");
+    const repoNodeModules = path.resolve(ROOT_DIR, "node_modules");
+    await esbuild.build({
+      entryPoints: [path.join(A2UI_APP_DIR, "bootstrap.js")],
+      bundle: true,
+      outfile: OUTPUT_FILE,
+      format: "esm",
+      nodePaths: [uiNodeModules, repoNodeModules],
+      alias: {
+        "@a2ui/lit/ui": path.resolve(a2uiLitDist, "0.8/ui/ui.js"),
+        "@a2ui/lit": path.resolve(a2uiLitDist, "index.js"),
+        "@openclaw/a2ui-theme-context": a2uiThemeContext
+      }
     });
 
     await fs.writeFile(HASH_FILE, currentHash);
